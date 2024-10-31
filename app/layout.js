@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <ClientClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} `}>
+        <body className={`${inter.className} animated-dotted-background`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
