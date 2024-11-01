@@ -1,3 +1,5 @@
+
+
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,6 +9,7 @@ import { PenBox } from 'lucide-react'
 import UserMenu from './user-menu'
 import DarkToggle from './dark'
 import { checkUser } from '@/lib/checkUser'
+import UserLoading from './user-loading'
 
 const Header = async() => {
 
@@ -41,6 +44,7 @@ const Header = async() => {
                         <DarkToggle />
                     </div>
                 </nav>
+                <UserLoading />
             </header>
 
         </>
