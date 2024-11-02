@@ -42,6 +42,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     } = useFetch(getIssuesForSprint);
 
     const [filteredIssues, setFilteredIssues] = useState(issues);
+    
 
     console.log({issues})
 
