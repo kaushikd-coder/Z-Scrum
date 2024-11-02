@@ -24,6 +24,7 @@ import { ExternalLink } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import statuses from "@/data/status";
+import { deleteIssue, updateIssue } from "@/actions/issues";
 // import { deleteIssue, updateIssue } from "@/actions/issues";
 
 const priorityOptions = ["LOW", "MEDIUM", "HIGH", "URGENT"];
@@ -43,45 +44,45 @@ export default function IssueDetailsDialog({
     const router = useRouter();
     const pathname = usePathname();
 
-    // const {
-    //     loading: deleteLoading,
-    //     error: deleteError,
-    //     fn: deleteIssueFn,
-    //     data: deleted,
-    // } = useFetch(deleteIssue);
+    const {
+        loading: deleteLoading,
+        error: deleteError,
+        fn: deleteIssueFn,
+        data: deleted,
+    } = useFetch(deleteIssue);
 
-    // const {
-    //     loading: updateLoading,
-    //     error: updateError,
-    //     fn: updateIssueFn,
-    //     data: updated,
-    // } = useFetch(updateIssue);
+    const {
+        loading: updateLoading,
+        error: updateError,
+        fn: updateIssueFn,
+        data: updated,
+    } = useFetch(updateIssue);
 
-    // const handleDelete = async () => {
-    //     if (window.confirm("Are you sure you want to delete this issue?")) {
-    //         deleteIssueFn(issue.id);
-    //     }
-    // };
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this issue?")) {
+            deleteIssueFn(issue.id);
+        }
+    };
 
     const handleStatusChange = async (newStatus) => {
         setStatus(newStatus);
-        // updateIssueFn(issue.id, { status: newStatus, priority });
+        updateIssueFn(issue.id, { status: newStatus, priority });
     };
 
     const handlePriorityChange = async (newPriority) => {
         setPriority(newPriority);
-        // updateIssueFn(issue.id, { status, priority: newPriority });
+        updateIssueFn(issue.id, { status, priority: newPriority });
     };
 
-    // useEffect(() => {
-    //     if (deleted) {
-    //         onClose();
-    //         onDelete();
-    //     }
-    //     if (updated) {
-    //         onUpdate(updated);
-    //     }
-    // }, [deleted, updated, deleteLoading, updateLoading]);
+    useEffect(() => {
+        if (deleted) {
+            onClose();
+            onDelete();
+        }
+        if (updated) {
+            onUpdate(updated);
+        }
+    }, [deleted, updated, deleteLoading, updateLoading]);
 
     const canChange =
         user.id === issue.reporter.clerkUserId || membership.role === "org:admin";
@@ -110,9 +111,9 @@ export default function IssueDetailsDialog({
                         )}
                     </div>
                 </DialogHeader>
-                {/* {(updateLoading || deleteLoading) && (
+                {(updateLoading || deleteLoading) && (
                     <BarLoader width={"100%"} color="#36d7b7" />
-                )} */}
+                )}
                 <div className="space-y-4">
                     <div className="flex items-center space-x-2">
                         <Select value={status} onValueChange={handleStatusChange}>
@@ -161,7 +162,7 @@ export default function IssueDetailsDialog({
                             <UserAvatar user={issue.reporter} />
                         </div>
                     </div>
-                    {/* {canChange && (
+                    {canChange && (
                         <Button
                             onClick={handleDelete}
                             disabled={deleteLoading}
@@ -174,7 +175,7 @@ export default function IssueDetailsDialog({
                         <p className="text-red-500">
                             {deleteError?.message || updateError?.message}
                         </p>
-                    )} */}
+                    )}
                 </div>
             </DialogContent>
         </Dialog>
