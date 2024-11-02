@@ -43,15 +43,16 @@ const SprintManager = ({
     const now = new Date();
 
     const canStart =
-        isAfter(now, startDate) && status === "PLANNED";
-        // isBefore(now, endDate) && status === "PLANNED";
+        isBefore(now, endDate) && isAfter(now, startDate) && status === "PLANNED";
+    // isBefore(now, endDate) && status === "PLANNED";
 
 
     const canEnd = status === "ACTIVE";
 
-    console.log({canStart})
+    console.log({ canStart })
 
     const handleStatusChange = async (newStatus) => {
+
         updateStatus(sprint.id, newStatus);
     };
 
@@ -60,6 +61,29 @@ const SprintManager = ({
         setSprint(selectedSprint);
         setStatus(selectedSprint.status);
         router.replace(`/project/${projectId}`, undefined, { shallow: true });
+    };
+
+    useEffect(() => {
+        if (updatedStatus && updatedStatus.success) {
+            setStatus(updatedStatus.sprint.status);
+            setSprint({
+                ...sprint,
+                status: updatedStatus.sprint.status,
+            });
+        }
+    }, [updatedStatus, loading]);
+
+    const getStatusText = () => {
+        if (status === "COMPLETED") {
+            return `Sprint Ended`;
+        }
+        if (status === "ACTIVE" && isAfter(now, endDate)) {
+            return `Overdue by ${formatDistanceToNow(endDate)}`;
+        }
+        if (status === "PLANNED" && isBefore(now, startDate)) {
+            return `Starts in ${formatDistanceToNow(startDate)}`;
+        }
+        return null;
     };
 
     return (
@@ -98,6 +122,12 @@ const SprintManager = ({
                     </Button>
                 )}
             </div>
+            {loading && <BarLoader width={"100%"} className="mt-2" color="#36d7b7" />}
+            {getStatusText() && (
+                <Badge variant="" className="mt-3 ml-1 self-start">
+                    {getStatusText()}
+                </Badge>
+            )}
         </>
     )
 }
