@@ -73,6 +73,18 @@ const SprintManager = ({
         }
     }, [updatedStatus, loading]);
 
+    useEffect(() => {
+        const sprintId = searchParams.get('sprint');
+        if (sprintId && sprintId !== sprint.id) {
+            const selectedSprint = sprints.find((s) => s.id === sprintId);
+            if(selectedSprint){
+                setSprint(selectedSprint);
+                setStatus(selectedSprint.status)
+                router.replace(`/project/${projectId}`, undefined, { shallow: true });
+            }
+        }
+    },[searchParams, sprints])
+
     const getStatusText = () => {
         if (status === "COMPLETED") {
             return `Sprint Ended`;

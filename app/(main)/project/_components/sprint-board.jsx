@@ -44,7 +44,6 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     const [filteredIssues, setFilteredIssues] = useState(issues);
     
 
-    console.log({issues})
 
     const handleFilterChange = (newFilteredIssues) => {
         setFilteredIssues(newFilteredIssues);
@@ -176,7 +175,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                                     <h3 className="font-semibold mb-2 text-center">
                                         {column.name}
                                     </h3>
-                                    {issues
+                                    {filteredIssues
                                         ?.filter((issue) => issue.status === column.key)
                                         .map((issue, index) => (
                                             <Draggable
