@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// ProjectSchema
 export const projectSchema = z.object({
     name: z
         .string()
