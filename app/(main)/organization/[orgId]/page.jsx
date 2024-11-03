@@ -2,11 +2,14 @@ import { getOrganization } from '@/actions/organization';
 import OrgSwitcher from '@/components/OrgSwitcher';
 import React from 'react'
 import ProjectList from './_components/project-list';
+import UserIssues from './_components/user-issues';
+import { auth } from '@clerk/nextjs/server';
 
 
 const Organization = async ({ params }) => {
 
   const { orgId } = params
+  const { userId } = auth();
 
   const organization = await getOrganization(orgId);
 
@@ -27,7 +30,9 @@ const Organization = async ({ params }) => {
       <div className='mb-4'>
         <ProjectList orgId={organization.id} />
       </div>
-      <div className='mt-8'>Show user assigned and reported issues here</div>
+      <div className="mt-8">
+        <UserIssues userId={userId} />
+      </div>
     </div>
   )
 }
